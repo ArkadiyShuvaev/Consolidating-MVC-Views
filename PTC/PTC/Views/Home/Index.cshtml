@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "SPA Demo";
+}
+
+@using (Html.BeginForm())
+{
+    <!-- Hidden fields area -->
+
+
+
+    <!-- Search area -->
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">Search for products</h1>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.Label("SearchProductName", "Product Name")
+                @Html.TextBox("SearchProductName", "", new { @class="form-control" })
+            </div>
+        </div>
+        
+        <div class="panel-footer">
+            <input type="button" id="btnSearch" value="Search" class="btn btn-primary btn-sm">
+            <input type="button" id="btnReset" value="Reset" class="btn btn-primary btn-sm">
+            
+        </div>
+    </div>
+
+
+    <!-- List area -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Introduction Date</th>
+                    <th>Url</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+}
+
+@section scripts
+{
+    <script>
+
+    </script>
+}
