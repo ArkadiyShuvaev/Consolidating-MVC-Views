@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<PTCData.TrainingProduct>
+
+@{
     ViewBag.Title = "SPA Demo";
 }
 
@@ -32,13 +34,24 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Introduction Date</th>
-                    <th>Url</th>
-                    <th>Price</th>
-                </tr>
+            <tr>
+                <th>Product Name</th>
+                <th>Introduction Date</th>
+                <th>Url</th>
+                <th>Price</th>
+            </tr>
             </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.IntroductionDate</td>
+                        <td>@item.Url</td>
+                        <td>@item.Price.ToString("c")</td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
 }

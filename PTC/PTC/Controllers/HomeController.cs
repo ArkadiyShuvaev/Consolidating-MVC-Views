@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PTCData;
+
 
 namespace PTC.Controllers
 {
@@ -10,21 +12,9 @@ namespace PTC.Controllers
 	{
 		public ActionResult Index()
 		{
-			return View();
+			var collection = new TrainingProductCollection();
+			return View(collection.Get());
 		}
-
-		public ActionResult About()
-		{
-			ViewBag.Message = "Your application description page.";
-
-			return View();
-		}
-
-		public ActionResult Contact()
-		{
-			ViewBag.Message = "Your contact page.";
-
-			return View();
-		}
+		
 	}
 }
