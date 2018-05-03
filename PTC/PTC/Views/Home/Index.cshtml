@@ -1,15 +1,15 @@
-﻿@model IEnumerable<PTCData.TrainingProduct>
+﻿@model PTC.ViewModels.TrainingProductViewModel
 
 @{
     ViewBag.Title = "SPA Demo";
 }
 
+@Html.ValidationSummary(false)
+
 @using (Html.BeginForm())
 {
     <!-- Hidden fields area -->
-
-
-
+    @Html.HiddenFor(m => m.EventCommand, new { id = "eventCommand" });
     <!-- Search area -->
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -17,15 +17,21 @@
         </div>
         <div class="panel-body">
             <div class="form-group">
-                @Html.Label("SearchProductName", "Product Name")
-                @Html.TextBox("SearchProductName", "", new { @class="form-control" })
+                @Html.LabelFor(model => model.SearchEntity.ProductName, "Product Name")
+                @Html.TextBoxFor(model => model.SearchEntity.ProductName,
+                    "", new { @class="form-control" })
             </div>
         </div>
         
         <div class="panel-footer">
-            <input type="button" id="btnSearch" value="Search" class="btn btn-primary btn-sm">
-            <input type="button" id="btnReset" value="Reset" class="btn btn-primary btn-sm">
+            <input type="button" id="btnSearch" value="Search"
+                   class="btn btn-primary btn-sm" data-ptc-action="search" /> 
+            <i class="glyphicon glyphicon-search"></i>
             
+            @*value="Search"*@
+
+            <input type="button" id="btnResetSearch" value="Reset"
+                   class="btn btn-primary btn-sm" data-ptc-action="resetsearch"> @*value="Reset"*@ 
         </div>
     </div>
 
@@ -42,7 +48,7 @@
             </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Products)
                 {
                     <tr>
                         <td>@item.ProductName</td>
@@ -59,6 +65,27 @@
 @section scripts
 {
     <script>
+        //var handler = new indexHandlers();
+        var elem = document.getElementById("btnSearch").addEventListener("click",
+            function(e) {
+                e.preventDefault();
+                var attrValue = this.dataset.ptcAction;
+                var hiddenElem = document.getElementById("eventCommand");
+                if (hiddenElem) {
+                    hiddenElem.value = attrValue;
+                }
+                this.form.submit();
+            });
 
+        document.getElementById("btnResetSearch").addEventListener("click",
+            function(e) {
+                e.preventDefault();
+                var attrValue = this.dataset.ptcAction;
+                var hiddenElem = document.getElementById("eventCommand");
+                if (hiddenElem) {
+                    hiddenElem.value = attrValue;
+                }
+                this.form.submit();
+            });
     </script>
 }
