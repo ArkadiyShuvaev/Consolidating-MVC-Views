@@ -8,9 +8,12 @@ namespace PTCData
 {
     public class TrainingProductService
     {
+	    private List<TrainingProduct> _mockData;
+
 	    public IEnumerable<TrainingProduct> Get()
 	    {
-		    return CreateMockData();
+		    _mockData = new List<TrainingProduct>();
+			return CreateMockData();
 	    }
 
 	    //private IEnumerable<TrainingProduct> CreateMockData()
@@ -21,9 +24,9 @@ namespace PTCData
 
 		private List<TrainingProduct> CreateMockData()
 		{
-			var mockData = new List<TrainingProduct>();
 
-			mockData.Add(new TrainingProduct
+
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 1,
 				ProductName = "Extending Bootstrap with CSS, JavaScript and jQuery",
@@ -32,7 +35,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 2,
 				ProductName = "Build your own Bootstrap Business Application Template in MVC",
@@ -41,7 +44,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 3,
 				ProductName = "Building Mobile Web Sites Using Web Forms, Bootstrap, and HTML5",
@@ -50,7 +53,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 4,
 				ProductName = "How to Start and Run A Consulting Business",
@@ -59,7 +62,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 5,
 				ProductName = "The Many Approaches to XML Processing in .NET Applications",
@@ -68,7 +71,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 6,
 				ProductName = "WPF for the Business Programmer",
@@ -77,7 +80,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 7,
 				ProductName = "WPF for the Visual Basic Programmer - Part 1",
@@ -86,7 +89,7 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			mockData.Add(new TrainingProduct
+			_mockData.Add(new TrainingProduct
 			{
 				ProductId = 8,
 				ProductName = "WPF for the Visual Basic Programmer - Part 2",
@@ -95,7 +98,19 @@ namespace PTCData
 				Price = Convert.ToDecimal(29.00)
 			});
 
-			return mockData;
+			return _mockData;
 		}
-	}
+
+	    public void Add(TrainingProduct productForCreation)
+	    {
+			_mockData.Add(new TrainingProduct
+			{
+				ProductId = _mockData.Count + 1,
+				ProductName = productForCreation.ProductName,
+				IntroductionDate = Convert.ToDateTime(productForCreation.IntroductionDate),
+				Url = productForCreation.Url,
+				Price = Convert.ToDecimal(productForCreation.Price)
+			});
+		}
+    }
 }

@@ -10,44 +10,97 @@
 {
     <!-- Hidden fields area -->
     @Html.HiddenFor(m => m.EventCommand, new { id = "eventCommand" });
-    <!-- Search area -->
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h1 class="panel-title">Search for products</h1>
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                @Html.LabelFor(model => model.SearchEntity.ProductName, "Product Name")
-                @Html.TextBoxFor(model => model.SearchEntity.ProductName,
-                    "", new { @class="form-control" })
+    @Html.HiddenFor(m => m.Mode, new { id = "mode" })
+    <!-- BEGIN SEARCH AREA -->
+    if(Model.IsSearchAreaVisible)
+     {
+         <div class="panel panel-primary">
+        
+             <div class="panel-heading">
+                 <h1 class="panel-title">Search for products</h1>
+             </div>
+             <div class="panel-body">
+                 <div class="form-group">
+                     @Html.LabelFor(model => model.SearchEntity.ProductName, "Product Name")
+                     @Html.TextBoxFor(model => model.SearchEntity.ProductName,
+                         "", new { @class="form-control" })
+                 </div>
+             </div>
+        
+             <div class="panel-footer">
+                 <button type="button" id="btnSearch"
+                         class="btn btn-primary btn-sm" data-ptc-action="search">
+                     <span class="glyphicon glyphicon-search"></span>&nbsp;Search
+                 </button>
+                 
+                 <input type="button" id="btnResetSearch" value="Reset"
+                        class="btn btn-primary btn-sm" data-ptc-action="resetsearch"> @*value="Reset"*@
+                 <button type="button" id="btnAdd" value="Add"
+                         class="btn btn-success btn-sm" data-ptc-action="add">
+                     <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Add
+                 </button>
+             </div>
+         </div>
+     }
+    <!-- END SEARCH AREA -->
+
+    <!--BEGIN DETAIL AREA-->
+    if (Model.IsDetailAreaVisible)
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title">Product Information</h1>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProductForCreation.ProductName)
+                    @Html.TextBoxFor(m =>m.ProductForCreation.ProductName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProductForCreation.IntroductionDate)
+                    @Html.TextBoxFor(m => m.ProductForCreation.IntroductionDate, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProductForCreation.Url)
+                    @Html.TextBoxFor(m => m.ProductForCreation.Url, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProductForCreation.Price)
+                    @Html.TextBoxFor(m => m.ProductForCreation.Price, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="form-group">
+                    <button id="btnAddProduct" class="btn btn-primary btn-sm"
+                            data-ptc-action="addProduct">
+                        <span class="glyphicon glyphicon-floppy-save"></span>&nbsp;Save
+                    </button>
+                    
+                    <button id="btnCancelProduct" class="btn btn-primary btn-sm"
+                            formnovalidate="formnovalidate"
+                            data-ptc-action="cancelProduct">
+                        <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;Cancel
+                    </button>
+                </div>
             </div>
         </div>
-        
-        <div class="panel-footer">
-            <input type="button" id="btnSearch" value="Search"
-                   class="btn btn-primary btn-sm" data-ptc-action="search" /> 
-            <i class="glyphicon glyphicon-search"></i>
-            
-            @*value="Search"*@
+    }
+    <!--END  DETAIL AREA-->
 
-            <input type="button" id="btnResetSearch" value="Reset"
-                   class="btn btn-primary btn-sm" data-ptc-action="resetsearch"> @*value="Reset"*@ 
-        </div>
-    </div>
-
-
-    <!-- List area -->
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-            <tr>
-                <th>Product Name</th>
-                <th>Introduction Date</th>
-                <th>Url</th>
-                <th>Price</th>
-            </tr>
-            </thead>
-            <tbody>
+    <!-- BEGIN LIST AREA -->
+    if (Model.IsListAreaVisible)
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Introduction Date</th>
+                    <th>Url</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody>
                 @foreach (var item in Model.Products)
                 {
                     <tr>
@@ -57,35 +110,50 @@
                         <td>@item.Price.ToString("c")</td>
                     </tr>
                 }
-            </tbody>
-        </table>
-    </div>
+                </tbody>
+            </table>
+        </div>
+    }
+    <!-- End list area -->
 }
 
 @section scripts
 {
     <script>
-        //var handler = new indexHandlers();
-        var elem = document.getElementById("btnSearch").addEventListener("click",
-            function(e) {
-                e.preventDefault();
-                var attrValue = this.dataset.ptcAction;
-                var hiddenElem = document.getElementById("eventCommand");
-                if (hiddenElem) {
-                    hiddenElem.value = attrValue;
-                }
-                this.form.submit();
-            });
 
-        document.getElementById("btnResetSearch").addEventListener("click",
-            function(e) {
-                e.preventDefault();
-                var attrValue = this.dataset.ptcAction;
-                var hiddenElem = document.getElementById("eventCommand");
-                if (hiddenElem) {
-                    hiddenElem.value = attrValue;
-                }
-                this.form.submit();
-            });
+        function setAttrValueAndSubmitForm(e) {
+            e.preventDefault();
+            var attrValue = this.dataset.ptcAction;
+            var hiddenElem = document.getElementById("eventCommand");
+            if (hiddenElem) {
+                hiddenElem.value = attrValue;
+            }
+            this.form.submit();
+        }
+
+        var elem = document.getElementById("btnSearch");
+        if (elem) {
+            elem.addEventListener("click", setAttrValueAndSubmitForm);
+        }
+
+        elem = document.getElementById("btnResetSearch");
+        if (elem) {
+            elem.addEventListener("click", setAttrValueAndSubmitForm);
+        }
+
+        elem = document.getElementById("btnAdd");
+        if (elem) {
+            elem.addEventListener("click", setAttrValueAndSubmitForm);
+        }
+
+        elem = document.getElementById("btnCancelProduct");
+        if (elem) {
+            elem.addEventListener("click", setAttrValueAndSubmitForm);
+        }
+
+        elem = document.getElementById("btnAddProduct");
+        if (elem) {
+            elem.addEventListener("click", setAttrValueAndSubmitForm);
+        }
     </script>
 }

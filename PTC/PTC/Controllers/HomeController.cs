@@ -14,7 +14,7 @@ namespace PTC.Controllers
 	{
 		public ActionResult Index()
 		{
-			var handler = new TrainingProductRequestHandler(
+			var handler = new TrainingProductViewModelManager(
 				new TrainingProductViewModel(), new TrainingProductService());
 			var vm = handler.HandleRequest();
 			return View(vm);
@@ -28,7 +28,7 @@ namespace PTC.Controllers
 				return View(vm);
 			}
 
-			var handler = new TrainingProductRequestHandler(
+			var handler = new TrainingProductViewModelManager(
 				vm, new TrainingProductService());
 			var newVm = handler.HandleRequest();
 

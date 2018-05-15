@@ -7,12 +7,12 @@ using PTCData;
 
 namespace PTC.Infrastructure
 {
-	public class TrainingProductRequestHandler
+	public class TrainingProductViewModelManager
 	{
 		private readonly TrainingProductViewModel _vm;
 		private readonly TrainingProductService _service;
 
-		public TrainingProductRequestHandler(TrainingProductViewModel vm, TrainingProductService service)
+		public TrainingProductViewModelManager(TrainingProductViewModel vm, TrainingProductService service)
 		{
 			_vm = vm;
 			_service = service;
@@ -25,8 +25,17 @@ namespace PTC.Infrastructure
 				case "list":
 					return Get();
 					break;
+				case "addproduct":
+					AddProduct();
+					Get();
+					ToggleToListView();
+					break;
+				case "cancelproduct":
+					Get();
+					ToggleToListView();
+					break;
 				case "add":
-					//return View(vm);
+					ToggleToAddProductView();
 					break;
 				case "edit":
 					//return View(vm);
@@ -45,6 +54,17 @@ namespace PTC.Infrastructure
 			return _vm;
 		}
 
+		private void AddProduct()
+		{
+			if (_vm.ProductForCreation == null)
+			{
+				throw new ArgumentNullException(nameof(_vm.ProductForCreation));
+			}
+
+			_service.Add(_vm.ProductForCreation);
+
+		}
+
 		private TrainingProductViewModel ResetSearch()
 		{
 			_vm.Products = _service.Get();
@@ -53,9 +73,9 @@ namespace PTC.Infrastructure
 
 		private TrainingProductViewModel SearchByName()
 		{
-			var filteredProducts = 
+			var filteredProducts =
 				_service.Get()
-					.Where(p => p.ProductName.StartsWith(_vm.SearchEntity.ProductName ?? string.Empty, 
+					.Where(p => p.ProductName.StartsWith(_vm.SearchEntity.ProductName ?? string.Empty,
 						StringComparison.OrdinalIgnoreCase))
 					.ToList();
 			//var vm = new TrainingProductViewModel();
@@ -68,6 +88,20 @@ namespace PTC.Infrastructure
 			var vm = new TrainingProductViewModel();
 			vm.Products = _service.Get();
 			return vm;
+		}
+
+		private void ToggleToListView()
+		{
+			_vm.IsSearchAreaVisible = true;
+			_vm.IsDetailAreaVisible = false;
+			_vm.IsListAreaVisible = false;
+		}
+
+		private void ToggleToAddProductView()
+		{
+			_vm.IsSearchAreaVisible = false;
+			_vm.IsDetailAreaVisible = true;
+			_vm.IsListAreaVisible = false;
 		}
 	}
 }
