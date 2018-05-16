@@ -16,6 +16,13 @@ namespace PTC.ViewModels
 			IsListAreaVisible = true;
 			IsValid = true;
 			Mode = "List";
+			ProductForCreation = new TrainingProduct
+			{
+				ProductName = "",
+				Price = 0,
+				IntroductionDate = DateTime.Today,
+				Url = ""
+			};
 		}
 
 		public string Mode { get; set; }
